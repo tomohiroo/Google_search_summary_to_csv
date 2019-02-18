@@ -1,4 +1,4 @@
-# google_search_summary
+# Google search summary to csv
 SEO用。
 キーワードでGoogle検索をし、そのサマリーをCSV化するスクリプトです。
 
