@@ -1,24 +1,20 @@
 const Nightmare = require("nightmare");
 const vo = require("vo");
 const fs = require("fs-extra");
+const argv = require("argv");
 
 vo(run)(function(err) {
   console.log("saving...");
 });
 
 const exportCSV = (content, name) => {
-  let formatCSV = "";
-  for (var i = 0; i < content.length; i++) {
-    var value = content[i];
-    for (var j = 0; j < value.length; j++) {
-      var innerValue = value[j] === null ? "" : value[j].toString();
-      var result = innerValue.replace(/"/g, '""');
-      if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
-      if (j > 0) formatCSV += ",";
-      formatCSV += result;
-    }
-    formatCSV += "\n";
-  }
+  const formatCSV = content.reduce(
+    (prevRow, nextRow) =>
+      prevRow +
+      "\n" +
+      nextRow.reduce((prevItem, nextItem) => prevItem + "," + nextItem)
+  );
+
   fs.mkdirsSync("./csv");
   fs.writeFile(`./csv/${name}.csv`, formatCSV, "utf8", err => {
     if (err) {
@@ -34,7 +30,7 @@ function* run() {
     show: true
   });
 
-  const query = process.argv.splice(2).reduce((a, b) => a + b);
+  const query = argv.run().targets.reduce((a, b) => a + " " + b);
 
   yield nightmare
     .goto("https://google.com")
