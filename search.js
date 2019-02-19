@@ -51,12 +51,14 @@ function* run() {
         }
       }
 
-      var csv = [[query, "", ""], ["title", "url", "discription"]];
+      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が各記事に活かせそうなこと"]];
 
       for (var i = 0; i < links.length; i++) {
         csv.push([
+          i + 1,
           links[i].querySelector("a").innerText.split("\n")[0],
           links[i].querySelector("a").href,
+          "",
           links[i].querySelector("span.st").innerText
         ]);
       }
