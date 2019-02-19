@@ -12,7 +12,7 @@ const exportCSV = (content, name) => {
     (prevRow, nextRow) =>
       prevRow +
       "\n" +
-      nextRow.reduce((prevItem, nextItem) => prevItem + "," + nextItem)
+      nextRow.reduce((prevItem, nextItem) => prevItem + ',"' + nextItem + '"')
   );
 
   fs.mkdirsSync("./csv");
@@ -20,7 +20,7 @@ const exportCSV = (content, name) => {
     if (err) {
       console.log("failed...");
     } else {
-      console.log(`${name}.csv has been saved!`);
+      console.log(`./csv/${name}.csv has been saved!`);
     }
   });
 };
