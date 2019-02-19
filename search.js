@@ -12,7 +12,7 @@ const exportCSV = (content, name) => {
     (prevRow, nextRow) =>
       prevRow +
       "\n" +
-      nextRow.reduce((prevItem, nextItem) => prevItem + ',"' + nextItem + '"')
+      nextRow.reduce((prevItem, nextItem) => prevItem + ',"' + nextItem.split('。').join("。\n") + '"')
   );
 
   fs.mkdirsSync("./csv");
