@@ -51,7 +51,7 @@ function* run() {
         }
       }
 
-      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が各記事に活かせそうなこと"]];
+      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が書く記事に活かせそうなこと"]];
 
       for (var i = 0; i < links.length; i++) {
         csv.push([
