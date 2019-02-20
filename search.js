@@ -7,13 +7,46 @@ vo(run)(function(err) {
   console.log("saving...");
 });
 
+const getSuggestSearch = (q) => {
+  const http = require('http');
+  const parseXML = require('xml2js').parseString;
+  const url = `http://www.google.com/complete/search?hl=ja&output=toolbar&q=${q}`;
+  return http.get(url, function(res){
+    var body = '';
+    res.setEncoding('utf8');
+
+    res.on('data', function(chunk){
+      body += chunk;
+    });
+
+    res.on('end', function(res){
+      parseXML(body, {
+        trim: true,
+        explicitArray: false
+      },function (err, data) {
+        if (err) {
+          throw err;
+        }
+        return data.toplevel.CompleteSuggestion.map((suggest) => suggest.suggestion.$.data).join(',')
+      });
+    });
+  }).on('error', function(e){
+    console.log(e.message); //エラー時
+  });
+};
+
 const exportCSV = (content, name) => {
-  const formatCSV = content.reduce(
+  let formatCSV = content.reduce(
     (prevRow, nextRow) =>
       prevRow +
       "\n" +
       nextRow.reduce((prevItem, nextItem) => prevItem + ',"' + nextItem.split('。').join("。\n") + '"')
   );
+
+
+
+
+  formatCSV = formatCSV + "\n" + getSuggestSearch(name);
 
   fs.mkdirsSync("./csv");
   fs.writeFile(`./csv/${name}.csv`, formatCSV, "utf8", err => {
@@ -51,7 +84,7 @@ function* run() {
         }
       }
 
-      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が各記事に活かせそうなこと"]];
+      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が書く記事に活かせそうなこと"]];
 
       for (var i = 0; i < links.length; i++) {
         csv.push([
