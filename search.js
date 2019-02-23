@@ -8,12 +8,18 @@ vo(run)(function(err) {
 });
 
 const exportCSV = (content, name) => {
-  const formatCSV = content.reduce(
-    (prevRow, nextRow) =>
-      prevRow +
-      "\n" +
-      nextRow.reduce((prevItem, nextItem) => prevItem + ',"' + nextItem.split('。').join("。\n") + '"')
-  );
+  const formatCSV =
+    content.reduce(
+      (prevRow, nextRow) =>
+        prevRow +
+        "\n" +
+        nextRow.reduce(
+          (prevItem, nextItem) =>
+            prevItem + ',"' + nextItem.split("。").join("。\n") + '"'
+        )
+    ) +
+    "\n\n予測変換," +
+    '=IMPORTXML("http://www.google.com/complete/search?hl=ja&output=toolbar&q="&A1,"//suggestion/@data")';
 
   fs.mkdirsSync("./csv");
   fs.writeFile(`./csv/${name}.csv`, formatCSV, "utf8", err => {
@@ -51,14 +57,27 @@ function* run() {
         }
       }
 
-      var csv = [[query, "", ""], ["rank", "title", "url", "ユーザーの意図", "description", "アウトライン", "記事のいいところや他にない情報・気付き", "自分が書く記事に活かせそうなこと"]];
+      var csv = [
+        [query, "", ""],
+        [
+          "rank",
+          "title",
+          "URL",
+          "Description",
+          "PA",
+          "DA",
+          "ユーザーの意図",
+          "アウトライン",
+          "記事のいいところや他にない情報・気付き",
+          "自分が書く記事に活かせそうなこと"
+        ]
+      ];
 
       for (var i = 0; i < links.length; i++) {
         csv.push([
           i + 1,
           links[i].querySelector("a").innerText.split("\n")[0],
           links[i].querySelector("a").href,
-          "",
           links[i].querySelector("span.st").innerText
         ]);
       }
