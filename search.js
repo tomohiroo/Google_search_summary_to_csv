@@ -1,4 +1,3 @@
-
 const Nightmare = require("nightmare");
 const vo = require("vo");
 const fs = require("fs-extra");
@@ -20,7 +19,7 @@ const exportCSV = (content, name) => {
         )
     ) +
     "\n\n予測変換," +
-    '"=IMPORTXML(""http://www.google.com/complete/search?hl=ja&output=toolbar&q=""&A1,""//suggestion/@data"")"'
+    '"=IMPORTXML(""http://www.google.com/complete/search?hl=ja&output=toolbar&q=""&A1,""//suggestion/@data"")"';
 
   fs.mkdirsSync("./csv");
   fs.writeFile(`./csv/${name}.csv`, formatCSV, "utf8", err => {
