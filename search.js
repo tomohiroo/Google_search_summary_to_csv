@@ -66,6 +66,7 @@ function* run() {
           "Description",
           "PA",
           "DA",
+          "文字数",
           "ユーザーの意図",
           "アウトライン",
           "記事のいいところや他にない情報・気付き",
@@ -73,12 +74,15 @@ function* run() {
         ]
       ];
 
-      for (var i = 0; i < links.length; i++) {
+      for (let i = 0; i < links.length; i++) {
         csv.push([
           i + 1,
           links[i].querySelector("a").innerText.split("\n")[0],
           links[i].querySelector("a").href,
-          links[i].querySelector("span.st").innerText
+          links[i].querySelector("span.st").innerText,
+          "",
+          "",
+          '=LEN("")'
         ]);
       }
       return csv;
